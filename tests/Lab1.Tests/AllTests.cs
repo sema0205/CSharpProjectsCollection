@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab1.Model;
 using Itmo.ObjectOrientedProgramming.Lab1.Obstacles;
 using Itmo.ObjectOrientedProgramming.Lab1.ResultTypes;
+using Itmo.ObjectOrientedProgramming.Lab1.Selectors;
 using Itmo.ObjectOrientedProgramming.Lab1.Ships;
 using Itmo.ObjectOrientedProgramming.Lab1.Ships.Models;
 using Itmo.ObjectOrientedProgramming.Lab1.Spaces;
@@ -32,6 +34,11 @@ public class AllTests
 
         Assert.Equal(new Failed.ShipCrewDead(), reportVacklas.Result);
         Assert.Equal(new Success.SuccessfulRoad(), reportVacklasPhoton.Result);
+
+        var sortedReports = new List<ModelInfo> { reportVacklas, reportVacklasPhoton };
+        sortedReports.Sort(ResultSelector.CompareByResult);
+        Assert.Equal(reportVacklasPhoton, sortedReports[0]);
+        Assert.Equal(reportVacklas, sortedReports[1]);
     }
 
     [Theory]
@@ -46,6 +53,12 @@ public class AllTests
         Assert.Equal(new Failed.ShipDestroyed(), reportVacklas.Result);
         Assert.Equal(new Success.DeflectorDisabled(), reportAvgur.Result);
         Assert.Equal(new Success.SuccessfulRoad(), reportMeredian.Result);
+
+        var sortedReports = new List<ModelInfo> { reportVacklas, reportAvgur, reportMeredian };
+        sortedReports.Sort(ResultSelector.CompareByResult);
+        Assert.Equal(reportAvgur, sortedReports[0]);
+        Assert.Equal(reportMeredian, sortedReports[1]);
+        Assert.Equal(reportVacklas, sortedReports[2]);
     }
 
     [Fact]
@@ -54,9 +67,15 @@ public class AllTests
         var shuttle = new ShipShuttle();
         var vacklas = new ShipVacklas();
         var space = new SpaceCosmos(null, MetricValues.MetricValues.ShortDistance);
+
         ModelInfo reportShuttle = SpaceEmulator.SpaceEmulator.MakeFlight(new ISpace[] { space }, shuttle);
         ModelInfo reportVacklas = SpaceEmulator.SpaceEmulator.MakeFlight(new ISpace[] { space }, vacklas);
         Assert.True(reportShuttle.FuelSpend < reportVacklas.FuelSpend);
+
+        var sortedReports = new List<ModelInfo> { reportShuttle, reportVacklas };
+        sortedReports.Sort(FuelSelector.CompareByFuelUsage);
+        Assert.Equal(reportShuttle, sortedReports[0]);
+        Assert.Equal(reportVacklas, sortedReports[1]);
     }
 
     [Fact]
@@ -65,10 +84,17 @@ public class AllTests
         var avgur = new ShipAvgur();
         var stella = new ShipStella();
         var space = new SpaceNebulaDensity(null, MetricValues.MetricValues.MidDistance);
+
         ModelInfo reportAvgur = SpaceEmulator.SpaceEmulator.MakeFlight(new ISpace[] { space }, avgur);
         ModelInfo reportStella = SpaceEmulator.SpaceEmulator.MakeFlight(new ISpace[] { space }, stella);
+
         Assert.Equal(new Failed.ShipPowerLost(), reportAvgur.Result);
         Assert.Equal(new Success.SuccessfulRoad(), reportStella.Result);
+
+        var sortedReports = new List<ModelInfo> { reportAvgur, reportStella };
+        sortedReports.Sort(ResultSelector.CompareByResult);
+        Assert.Equal(reportStella, sortedReports[0]);
+        Assert.Equal(reportAvgur, sortedReports[1]);
     }
 
     [Fact]
@@ -77,19 +103,28 @@ public class AllTests
         var shuttle = new ShipShuttle();
         var vacklas = new ShipVacklas();
         var space = new SpaceNebulaParticles(null, MetricValues.MetricValues.MidDistance);
+
         ModelInfo reportShuttle = SpaceEmulator.SpaceEmulator.MakeFlight(new ISpace[] { space }, shuttle);
         ModelInfo reportVacklas = SpaceEmulator.SpaceEmulator.MakeFlight(new ISpace[] { space }, vacklas);
+
         Assert.Equal(new Failed.ShipPowerLost(), reportShuttle.Result);
         Assert.Equal(new Success.SuccessfulRoad(), reportVacklas.Result);
+
+        var sortedReports = new List<ModelInfo> { reportVacklas, reportShuttle };
+        sortedReports.Sort(ResultSelector.CompareByResult);
+        Assert.Equal(reportVacklas, sortedReports[0]);
+        Assert.Equal(reportShuttle, sortedReports[1]);
     }
 
     [Fact]
     public void Test7()
     {
         var avgur = new ShipAvgur();
+
         var spaceCosmos = new SpaceCosmos(new IObstacleCosmos[] { new ObstacleAsteroid(10), new ObstacleMeteoroid(4) }, MetricValues.MetricValues.ShortDistance);
         var spaceNebulaParticles = new SpaceNebulaParticles(null, MetricValues.MetricValues.ShortDistance);
         var spaceNebulaDensity = new SpaceNebulaDensity(new IObstacleNebulaDensity[] { new ObstacleAntiMatter(1) }, MetricValues.MetricValues.ShortDistance);
+
         ModelInfo reportAvgur = SpaceEmulator.SpaceEmulator.MakeFlight(new ISpace[] { spaceCosmos, spaceNebulaParticles, spaceNebulaDensity }, avgur);
         Assert.Equal(new Failed.ShipCrewDead(), reportAvgur.Result);
     }
