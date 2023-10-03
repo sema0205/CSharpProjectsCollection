@@ -2,19 +2,22 @@ using Itmo.ObjectOrientedProgramming.Lab1.Protection;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Obstacles;
 
-public abstract class ObstacleNebulaParticles : IObstacle
+public class ObstacleAntiNeutrino : IObstacleNebulaParticles
 {
-    protected ObstacleNebulaParticles(int amount)
+    protected ObstacleAntiNeutrino(int amount)
     {
         Amount = amount;
     }
 
     private int Amount { get; }
 
-    public abstract bool DoDamage(IProtection? protection);
-
     public int ObstaclesAmount()
     {
         return Amount;
+    }
+
+    public bool DoDamage(IProtection? protection)
+    {
+        return protection?.DoAntiNeutrinoDamage() ?? false;
     }
 }

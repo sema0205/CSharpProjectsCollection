@@ -2,9 +2,9 @@ using Itmo.ObjectOrientedProgramming.Lab1.Protection;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Obstacles;
 
-public abstract class ObstacleCosmos : IObstacle
+public interface ObstacleNebulaParticles : IObstacle
 {
-    protected ObstacleCosmos(int amount)
+    protected ObstacleNebulaParticles(int amount)
     {
         Amount = amount;
     }

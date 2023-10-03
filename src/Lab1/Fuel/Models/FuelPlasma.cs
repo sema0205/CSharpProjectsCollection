@@ -1,11 +1,6 @@
 namespace Itmo.ObjectOrientedProgramming.Lab1.Fuel;
 
-public class FuelPlasma : Fuel
+public class FuelPlasma : IFuel
 {
-    private int FuelMarketPrice { get; } = MetricValues.MetricValues.PlasmaPrice;
 
-    public override void CalculatePrice(int fuelAmount)
-    {
-        FuelTotalPrice = fuelAmount * FuelMarketPrice;
-    }
 }

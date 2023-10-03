@@ -3,22 +3,19 @@ using Itmo.ObjectOrientedProgramming.Lab1.Spaces;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Engines;
 
-public abstract class EngineJump : IBurnFuel
+public interface EnginePulse : IBurnFuel
 {
-    protected EngineJump(int fuelUsage, int speedInfo, int jumpDistance)
-    {
-        FuelUsageInfo = fuelUsage;
-        SpeedInfo = speedInfo;
-        JumpDistance = jumpDistance;
-    }
+    // protected EnginePulse(int fuelUsage, int speedInfo)
+    // {
+    //     FuelUsageInfo = fuelUsage;
+    //     SpeedInfo = speedInfo;
+    // }
 
-    protected FuelGraviton Fuel { get; } = new FuelGraviton();
+    protected FuelPlasma Fuel { get; } = new FuelPlasma();
 
     protected int FuelUsageInfo { get; }
 
     protected int SpeedInfo { get; }
-
-    protected int JumpDistance { get; }
 
     public abstract IResource CalculateFuel(int distance);
 

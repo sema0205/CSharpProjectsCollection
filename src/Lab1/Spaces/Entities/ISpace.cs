@@ -3,9 +3,9 @@ using Itmo.ObjectOrientedProgramming.Lab1.Obstacles;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Spaces;
 
-public abstract class Space
+public interface ISpace
 {
-    public int Distance { get; protected set; }
+    public int Distance { get; }
 
     public abstract IReadOnlyCollection<IObstacle?> GetObstacles();
 }
