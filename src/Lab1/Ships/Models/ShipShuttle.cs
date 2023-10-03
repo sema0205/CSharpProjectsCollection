@@ -1,11 +1,38 @@
-using System.Collections.Generic;
+using Itmo.ObjectOrientedProgramming.Lab1.Deflectors;
 using Itmo.ObjectOrientedProgramming.Lab1.Engines;
+using Itmo.ObjectOrientedProgramming.Lab1.ResultTypes;
 using Itmo.ObjectOrientedProgramming.Lab1.ShipHull;
+using Itmo.ObjectOrientedProgramming.Lab1.ShipModifiers;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Ships.Models;
 
-public class ShipShuttle : Ship
+public class ShipShuttle : IShip, IShipWithPulseEngine
 {
-    public ShipShuttle(bool matterSupport = false, int weightClass = 1)
-        : base(new List<IBurnFuel> { new EnginePulseC() }, null, new HullClass1(weightClass), matterSupport) { }
+    public IEnginePulse PulseEngine { get; } = new EnginePulseC();
+
+    public IDeflector? Deflector { get; set; }
+
+    public IHull Hull { get; } = new HullClass1();
+
+    public DamageResult ReceiveDamage(int damageAmount)
+    {
+        if (Deflector is null)
+        {
+            return Hull.GetDamage(damageAmount);
+        }
+
+        DamageResult resultDeflector = Deflector.GetDamage(damageAmount);
+        if (resultDeflector is Failed.LeftDamage leftDamage)
+        {
+            return Hull.GetDamage(leftDamage.DamageAmount);
+        }
+
+        return resultDeflector;
+    }
+
+    public void AddPhotonDeflector()
+    {
+        if (Deflector is not null)
+            Deflector = new PhotonDeflector(Deflector);
+    }
 }

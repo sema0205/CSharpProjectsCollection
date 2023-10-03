@@ -1,7 +1,12 @@
 using System.Collections.Generic;
-using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab1.Engines;
+using Itmo.ObjectOrientedProgramming.Lab1.Exchanges;
+using Itmo.ObjectOrientedProgramming.Lab1.Exchanges.Models;
+using Itmo.ObjectOrientedProgramming.Lab1.Fuel;
 using Itmo.ObjectOrientedProgramming.Lab1.Model;
+using Itmo.ObjectOrientedProgramming.Lab1.Obstacles;
+using Itmo.ObjectOrientedProgramming.Lab1.ResultTypes;
+using Itmo.ObjectOrientedProgramming.Lab1.ShipModifiers;
 using Itmo.ObjectOrientedProgramming.Lab1.Ships;
 using Itmo.ObjectOrientedProgramming.Lab1.Spaces;
 
@@ -9,46 +14,65 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceEmulator;
 
 public static class SpaceEmulator
 {
-    public static ModelInfo MakeFlight(IReadOnlyCollection<Space> spaces, Ship ship)
+    public static ModelInfo MakeFlight(IReadOnlyCollection<ISpace> spaces, IShip ship)
     {
-        if (spaces.Any(space => !SimulateTransfer(space, ship)))
+        var model = new ModelInfo();
+        DamageResult transferResult = new Success.SuccessfulRoad();
+        foreach (ISpace space in spaces)
         {
-            return ship.ReportInfo;
+            transferResult = SimulateTransfer(space, ship, model);
+            if (transferResult is Success) continue;
+            model.Result = transferResult;
+            return model;
         }
 
-        return ship.ReportInfo;
+        model.Result = transferResult;
+        return model;
     }
 
-    private static bool SimulateTransfer(Space space, Ship ship)
+    private static DamageResult SimulateTransfer(ISpace space, IShip ship, ModelInfo model)
     {
-        ship.ReportInfo.SuccessfulRoad = true;
-
-        IBurnFuel? engine = PickEngine(space, ship);
+        IExchange exchange = new FuelExchange();
+        IEngine? engine = PickEngine(space, ship);
         if (engine is null)
         {
-            ship.ReportInfo.NotEnoughPower = true;
-            ship.ReportInfo.SuccessfulRoad = false;
-            return false;
+            return new Failed.ShipPowerLost();
         }
 
-        ship.ReportInfo.FuelSpent = engine.CalculateFuel(space.Distance).GetPrice();
+        IFuel fuel = engine.CalculateFuel(space.Distance);
+        model.TimeSpent += engine.CalculateTime(space.Distance);
+        model.FuelSpend += exchange.CheckStockPrice(fuel);
 
-        if (space.GetObstacles().All(ship.GetDamage)) return true;
-        ship.ReportInfo.ShipDestroyed = true;
-        ship.ReportInfo.SuccessfulRoad = false;
+        DamageResult obstacleHitResult = new Success.SuccessfulRoad();
+        foreach (IObstacle obstacle in space.GetObstacles())
+        {
+            obstacleHitResult = obstacle.DoDamage(ship);
+            if (obstacleHitResult is not Success)
+            {
+                return obstacleHitResult;
+            }
+        }
 
-        return false;
+        return obstacleHitResult is Success.AbsorbedHit ? new Success.SuccessfulRoad() : obstacleHitResult;
     }
 
-    private static IBurnFuel? PickEngine(Space space, Ship ship)
+    private static IEngine? PickEngine(ISpace space, IShip ship)
     {
-        IBurnFuel? bestEngine = null;
+        IEngine? bestEngine = null;
 
-        foreach (IBurnFuel engine in ship.Engines)
+        if (ship is IShipWithPulseEngine pulseEngine)
         {
-            if (engine.ValidateSpace(space))
+            if (pulseEngine.PulseEngine.ValidateSpace(space) is Success.SuccessfulRoad)
             {
-                bestEngine = engine;
+                bestEngine = pulseEngine.PulseEngine;
+            }
+        }
+
+        if (ship is IShipWithJumpEngine engine)
+        {
+            if (engine.JumpEngine.ValidateSpace(space) is Success.SuccessfulRoad)
+            {
+                bestEngine = engine.JumpEngine;
             }
         }
 

@@ -1,10 +1,14 @@
-using Itmo.ObjectOrientedProgramming.Lab1.Protection;
+using Itmo.ObjectOrientedProgramming.Lab1.ResultTypes;
+using Itmo.ObjectOrientedProgramming.Lab1.ShipModifiers;
+using Itmo.ObjectOrientedProgramming.Lab1.Ships;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Obstacles;
 
-public class ObstacleAntiNeutrino : IObstacleNebulaParticles
+public class ObstacleWhale : IObstacleNebulaParticles
 {
-    protected ObstacleAntiNeutrino(int amount)
+    private const int DamagePoints = 20;
+
+    public ObstacleWhale(int amount)
     {
         Amount = amount;
     }
@@ -16,8 +20,15 @@ public class ObstacleAntiNeutrino : IObstacleNebulaParticles
         return Amount;
     }
 
-    public bool DoDamage(IProtection? protection)
+    public DamageResult DoDamage(IShip ship)
     {
-        return protection?.DoAntiNeutrinoDamage() ?? false;
+        if (ship is IShipWithAntiNitrideEmitter)
+        {
+            return new Success.AbsorbedHit();
+        }
+
+        if (ship.Deflector is null) return new Failed.ShipDestroyed();
+        DamageResult resultHit = ship.Deflector.GetDamage(DamagePoints);
+        return resultHit is Success ? resultHit : new Failed.ShipDestroyed();
     }
 }

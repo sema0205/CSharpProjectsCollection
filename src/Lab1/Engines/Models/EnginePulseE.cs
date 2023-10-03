@@ -1,24 +1,31 @@
 using System;
 using Itmo.ObjectOrientedProgramming.Lab1.Fuel;
+using Itmo.ObjectOrientedProgramming.Lab1.ResultTypes;
 using Itmo.ObjectOrientedProgramming.Lab1.Spaces;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Engines;
 
-public class EnginePulseE : EnginePulse
+public class EnginePulseE : IEnginePulse
 {
-    public EnginePulseE(int fuelUsage = 10, int speedInfo = 50)
-        : base(fuelUsage, speedInfo) { }
-
-    public override IResource CalculateFuel(int distance)
+    private const int FuelUsageInfo = 10;
+    public IFuel CalculateFuel(int distance)
     {
-        int time = distance / SpeedInfo;
-        int fuelAmount = (int)Math.Exp(time);
-        Fuel.CalculatePrice(fuelAmount);
-        return Fuel;
+        int fuelAmount = (distance * FuelUsageInfo) / 100;
+        return new FuelPlasma(fuelAmount);
     }
 
-    public override bool ValidateSpace(Space space)
+    public int CalculateTime(int distance)
     {
-        return space is SpaceCosmos or SpaceNebulaParticles;
+        return (int)Math.Log(distance);
+    }
+
+    public DamageResult ValidateSpace(ISpace space)
+    {
+        if (space is SpaceCosmos or SpaceNebulaParticles)
+        {
+            return new Success.SuccessfulRoad();
+        }
+
+        return new Failed.ShipPowerLost();
     }
 }

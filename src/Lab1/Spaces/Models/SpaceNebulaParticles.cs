@@ -3,25 +3,27 @@ using Itmo.ObjectOrientedProgramming.Lab1.Obstacles;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Spaces;
 
-public class SpaceNebulaParticles : Space
+public class SpaceNebulaParticles : ISpace
 {
-    private readonly List<ObstacleNebulaParticles?> _obstacles;
+    private readonly List<IObstacleNebulaParticles> _obstacles;
 
-    public SpaceNebulaParticles(IReadOnlyCollection<ObstacleNebulaParticles?>? obstacles, int distance = 250)
+    public SpaceNebulaParticles(IReadOnlyCollection<IObstacleNebulaParticles>? obstacles = null, int distance = 250)
     {
         Distance = distance;
-        _obstacles = new List<ObstacleNebulaParticles?>();
+        _obstacles = new List<IObstacleNebulaParticles>();
         if (obstacles == null) return;
-        foreach (ObstacleNebulaParticles? obstacle in obstacles)
+        foreach (IObstacleNebulaParticles obstacle in obstacles)
         {
-            for (int i = 0; i < obstacle?.ObstaclesAmount(); i++)
+            for (int i = 0; i < obstacle.ObstaclesAmount(); i++)
             {
                 _obstacles.Add(obstacle);
             }
         }
     }
 
-    public override IReadOnlyCollection<ObstacleNebulaParticles?> GetObstacles()
+    public int Distance { get; }
+
+    public IReadOnlyCollection<IObstacle> GetObstacles()
     {
         return _obstacles;
     }

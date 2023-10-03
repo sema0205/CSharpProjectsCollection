@@ -1,12 +1,38 @@
-using System.Collections.Generic;
-using Itmo.ObjectOrientedProgramming.Lab1.Deflectors.Models;
+using Itmo.ObjectOrientedProgramming.Lab1.Deflectors;
 using Itmo.ObjectOrientedProgramming.Lab1.Engines;
+using Itmo.ObjectOrientedProgramming.Lab1.ResultTypes;
 using Itmo.ObjectOrientedProgramming.Lab1.ShipHull;
+using Itmo.ObjectOrientedProgramming.Lab1.ShipModifiers;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Ships.Models;
 
-public class ShipMeridian : Ship
+public class ShipMeridian : IShip, IShipWithPulseEngine, IShipWithAntiNitrideEmitter
 {
-    public ShipMeridian(bool photonSupport = false, bool matterSupport = true, int weightClass = 2)
-        : base(new List<IBurnFuel> { new EnginePulseE() }, new Deflector2(photonSupport), new HullClass2(weightClass), matterSupport) { }
+    public IEnginePulse PulseEngine { get; } = new EnginePulseE();
+
+    public IDeflector? Deflector { get; set; } = new Deflector2();
+
+    public IHull Hull { get; set; } = new HullClass2();
+
+    public DamageResult ReceiveDamage(int damageAmount)
+    {
+        if (Deflector is null)
+        {
+            return Hull.GetDamage(damageAmount);
+        }
+
+        DamageResult resultDeflector = Deflector.GetDamage(damageAmount);
+        if (resultDeflector is Failed.LeftDamage leftDamage)
+        {
+            return Hull.GetDamage(leftDamage.DamageAmount);
+        }
+
+        return resultDeflector;
+    }
+
+    public void AddPhotonDeflector()
+    {
+        if (Deflector is not null)
+            Deflector = new PhotonDeflector(Deflector);
+    }
 }

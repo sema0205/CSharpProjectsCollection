@@ -7,5 +7,5 @@ public interface ISpace
 {
     public int Distance { get; }
 
-    public abstract IReadOnlyCollection<IObstacle?> GetObstacles();
+    public IReadOnlyCollection<IObstacle> GetObstacles();
 }

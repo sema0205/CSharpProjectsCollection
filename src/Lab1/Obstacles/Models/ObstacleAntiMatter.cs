@@ -1,20 +1,32 @@
 using Itmo.ObjectOrientedProgramming.Lab1.Deflectors;
-using Itmo.ObjectOrientedProgramming.Lab1.Protection;
+using Itmo.ObjectOrientedProgramming.Lab1.ResultTypes;
+using Itmo.ObjectOrientedProgramming.Lab1.Ships;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Obstacles;
 
-public class ObstacleAntiMatter : ObstacleNebulaDensity
+public class ObstacleAntiMatter : IObstacleNebulaDensity
 {
-    public ObstacleAntiMatter(int amount = 1)
-        : base(amount) { }
+    private const int DamagePoints = 25;
 
-    public override bool DoDamage(IProtection? protection)
+    public ObstacleAntiMatter(int amount)
     {
-        if (protection is Deflector deflector)
+        Amount = amount;
+    }
+
+    private int Amount { get; }
+
+    public int ObstaclesAmount()
+    {
+        return Amount;
+    }
+
+    public DamageResult DoDamage(IShip ship)
+    {
+        if (ship.Deflector is PhotonDeflector)
         {
-            return deflector.DoPhotonDamage();
+            return ship.ReceiveDamage(DamagePoints);
         }
 
-        return false;
+        return new Failed.ShipCrewDead();
     }
 }

@@ -1,14 +1,26 @@
-using Itmo.ObjectOrientedProgramming.Lab1.Protection;
+using Itmo.ObjectOrientedProgramming.Lab1.ResultTypes;
+using Itmo.ObjectOrientedProgramming.Lab1.Ships;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Obstacles;
 
-public class ObstacleAsteroid : ObstacleCosmos
+public class ObstacleAsteroid : IObstacleCosmos
 {
-    public ObstacleAsteroid(int amount = 1)
-        : base(amount) { }
+    private const int DamagePoints = 5;
 
-    public override bool DoDamage(IProtection? protection)
+    public ObstacleAsteroid(int amount)
     {
-        return protection?.DoAsteroidDamage() ?? false;
+        Amount = amount;
+    }
+
+    private int Amount { get; }
+
+    public int ObstaclesAmount()
+    {
+        return Amount;
+    }
+
+    public DamageResult DoDamage(IShip ship)
+    {
+        return ship.ReceiveDamage(DamagePoints);
     }
 }

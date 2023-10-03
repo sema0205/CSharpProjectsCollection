@@ -1,19 +1,51 @@
-namespace Itmo.ObjectOrientedProgramming.Lab1.Deflectors.Models;
+using System;
+using Itmo.ObjectOrientedProgramming.Lab1.ResultTypes;
 
-public class Deflector3 : Deflector
+namespace Itmo.ObjectOrientedProgramming.Lab1.Deflectors;
+
+public class Deflector3 : IDeflector
 {
-    public Deflector3(bool photonSupport, int healthAmount = 400)
-        : base(photonSupport, healthAmount) { }
+    private const double AsteroidCoefficient = 0.625;
 
-    public override bool DoAsteroidDamage()
-    {
-        HealthAmount -= 10;
-        return HealthAmount > 0;
-    }
+    private const double MeteoroidCoefficient = 12.5;
 
-    public override bool DoMeteoroidDamage()
+    private const double WhaleCoefficient = 5;
+
+    public double Health { get; private set; } = 100;
+
+    public DamageResult GetDamage(double damageAmount)
     {
-        HealthAmount -= 40;
-        return HealthAmount > 0;
+        if (Health <= 0)
+        {
+            return new Success.DeflectorDisabled();
+        }
+
+        double leftDamage = 0;
+
+        switch (damageAmount)
+        {
+            case >= 1 and <= 5:
+                Health -= AsteroidCoefficient * damageAmount;
+                leftDamage = Math.Abs(Health) / AsteroidCoefficient;
+                break;
+            case >= 6 and <= 10:
+                Health -= MeteoroidCoefficient * damageAmount;
+                leftDamage = Math.Abs(Health) / MeteoroidCoefficient;
+                break;
+            case >= 11 and <= 20:
+                Health -= WhaleCoefficient * damageAmount;
+                leftDamage = Math.Abs(Health) / WhaleCoefficient;
+                break;
+            default:
+                Health = 0;
+                break;
+        }
+
+        return Health switch
+        {
+            0 => new Success.DeflectorDisabled(),
+            < 0 => new Failed.LeftDamage(Math.Abs(leftDamage)),
+            _ => new Success.AbsorbedHit(),
+        };
     }
 }

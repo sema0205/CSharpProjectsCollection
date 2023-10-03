@@ -1,18 +1,40 @@
+using Itmo.ObjectOrientedProgramming.Lab1.ResultTypes;
+
 namespace Itmo.ObjectOrientedProgramming.Lab1.ShipHull;
 
-public class HullClass1 : Hull
+public class HullClass1 : IHull
 {
-    public HullClass1(int weightClass, int healthAmount = 1)
-        : base(weightClass, healthAmount) { }
+    private const double AsteroidCoefficient = 20;
 
-    public override bool DoAsteroidDamage()
-    {
-        HealthAmount--;
-        return HealthAmount > 0;
-    }
+    private const double MeteoroidCoefficient = 11;
 
-    public override bool DoMeteoroidDamage()
+    private const double WhaleCoefficient = 6;
+
+    public double Health { get; private set; } = 100;
+
+    public DamageResult GetDamage(double damageAmount)
     {
-        return false;
+        switch (damageAmount)
+        {
+            case >= 1 and <= 5:
+                Health -= AsteroidCoefficient * damageAmount;
+                break;
+            case >= 6 and <= 10:
+                Health -= MeteoroidCoefficient * damageAmount;
+                break;
+            case >= 11 and <= 20:
+                Health -= WhaleCoefficient * damageAmount;
+                break;
+            default:
+                Health = 0;
+                break;
+        }
+
+        if (Health <= 0)
+        {
+            return new Failed.ShipDestroyed();
+        }
+
+        return new Success.AbsorbedHit();
     }
 }
