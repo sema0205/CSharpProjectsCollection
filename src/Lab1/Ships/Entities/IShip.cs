@@ -7,6 +7,4 @@ public interface IShip
 {
     public IDeflector? Deflector { get; }
     public DamageResult ReceiveDamage(int damageAmount);
-
-    public void AddPhotonDeflector();
 }

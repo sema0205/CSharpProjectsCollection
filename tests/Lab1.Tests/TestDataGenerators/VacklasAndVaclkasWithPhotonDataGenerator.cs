@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using Itmo.ObjectOrientedProgramming.Lab1.Deflectors;
 using Itmo.ObjectOrientedProgramming.Lab1.Ships.Models;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Tests;
 
-public class Test2DataGenerator : IEnumerable<object[]>
+public class VacklasAndVaclkasWithPhotonDataGenerator : IEnumerable<object[]>
 {
     private readonly List<object[]> _ships;
 
-    public Test2DataGenerator()
+    public VacklasAndVaclkasWithPhotonDataGenerator()
     {
         var vacklasWithPhoton = new ShipVacklas();
-        vacklasWithPhoton.AddPhotonDeflector();
+        vacklasWithPhoton.Deflector = new PhotonDeflector(vacklasWithPhoton.Deflector);
         _ships = new List<object[]> { new object[] { new ShipVacklas(), vacklasWithPhoton } };
     }
 

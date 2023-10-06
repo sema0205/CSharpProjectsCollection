@@ -1,17 +1,27 @@
+using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab1.Model;
 using Itmo.ObjectOrientedProgramming.Lab1.ResultTypes;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Selectors;
 
-public static class FuelSelector
+public class FuelSelector : IComparer<ModelInfo>
 {
-    public static int CompareByFuelUsage(ModelInfo first, ModelInfo second)
+    public int Compare(ModelInfo? x, ModelInfo? y)
     {
+        var first = new ModelInfo();
+        var second = new ModelInfo();
+
+        if (x is not null && y is not null)
+        {
+            first = x;
+            second = y;
+        }
+
         switch (first.Result)
         {
-            case Success when second.Result is Failed:
+            case DamageResult.Success when second.Result is DamageResult.Failed:
                 return -1;
-            case Failed when second.Result is Success:
+            case DamageResult.Failed when second.Result is DamageResult.Success:
                 return 1;
         }
 

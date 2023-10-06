@@ -6,27 +6,20 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.Obstacles;
 
 public class ObstacleAntiMatter : IObstacleNebulaDensity
 {
-    private const int DamagePoints = 25;
-
     public ObstacleAntiMatter(int amount)
     {
         Amount = amount;
     }
 
-    private int Amount { get; }
-
-    public int ObstaclesAmount()
-    {
-        return Amount;
-    }
+    public int Amount { get; set; }
 
     public DamageResult DoDamage(IShip ship)
     {
-        if (ship.Deflector is PhotonDeflector)
+        if (ship.Deflector is PhotonDeflector photonDeflector)
         {
-            return ship.ReceiveDamage(DamagePoints);
+           return photonDeflector.PhotonFlash();
         }
 
-        return new Failed.ShipCrewDead();
+        return new DamageResult.ShipCrewDead();
     }
 }

@@ -12,12 +12,7 @@ public class ObstacleMeteoroid : IObstacleCosmos
         Amount = amount;
     }
 
-    private int Amount { get; }
-
-    public int ObstaclesAmount()
-    {
-        return Amount;
-    }
+    public int Amount { get; set; }
 
     public DamageResult DoDamage(IShip ship)
     {

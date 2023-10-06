@@ -4,11 +4,11 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.ShipHull;
 
 public class HullClass2 : IHull
 {
-    private const double AsteroidCoefficient = 4;
+    private const double SmallDamage = 4;
 
-    private const double MeteoroidCoefficient = 50;
+    private const double MiddleDamage = 50;
 
-    private const double WhaleCoefficient = 6;
+    private const double HighDamage = 6;
 
     public double Health { get; private set; } = 100;
 
@@ -17,13 +17,13 @@ public class HullClass2 : IHull
         switch (damageAmount)
         {
             case >= 1 and <= 5:
-                Health -= AsteroidCoefficient * damageAmount;
+                Health -= SmallDamage * damageAmount;
                 break;
             case >= 6 and <= 10:
-                Health -= MeteoroidCoefficient * damageAmount;
+                Health -= MiddleDamage * damageAmount;
                 break;
             case >= 11 and <= 20:
-                Health -= WhaleCoefficient * damageAmount;
+                Health -= HighDamage * damageAmount;
                 break;
             default:
                 Health = 0;
@@ -32,9 +32,9 @@ public class HullClass2 : IHull
 
         if (Health <= 0)
         {
-            return new Failed.ShipDestroyed();
+            return new DamageResult.ShipDestroyed();
         }
 
-        return new Success.AbsorbedHit();
+        return new DamageResult.AbsorbedHit();
     }
 }

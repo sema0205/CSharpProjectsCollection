@@ -13,22 +13,17 @@ public class ObstacleWhale : IObstacleNebulaParticles
         Amount = amount;
     }
 
-    private int Amount { get; }
-
-    public int ObstaclesAmount()
-    {
-        return Amount;
-    }
+    public int Amount { get; set; }
 
     public DamageResult DoDamage(IShip ship)
     {
         if (ship is IShipWithAntiNitrideEmitter)
         {
-            return new Success.AbsorbedHit();
+            return new DamageResult.AbsorbedHit();
         }
 
-        if (ship.Deflector is null) return new Failed.ShipDestroyed();
+        if (ship.Deflector is null) return new DamageResult.ShipDestroyed();
         DamageResult resultHit = ship.Deflector.GetDamage(DamagePoints);
-        return resultHit is Success ? resultHit : new Failed.ShipDestroyed();
+        return resultHit is DamageResult.Success ? resultHit : new DamageResult.ShipDestroyed();
     }
 }

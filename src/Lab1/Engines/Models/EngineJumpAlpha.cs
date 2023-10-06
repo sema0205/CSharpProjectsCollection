@@ -1,7 +1,6 @@
 using System;
 using Itmo.ObjectOrientedProgramming.Lab1.Fuel;
 using Itmo.ObjectOrientedProgramming.Lab1.ResultTypes;
-using Itmo.ObjectOrientedProgramming.Lab1.Spaces;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Engines;
 
@@ -11,29 +10,16 @@ public class EngineJumpAlpha : IEngineJump
 
     private const int FuelUsageInfo = 6;
 
-    public IFuel CalculateFuel(int distance)
+    public EngineResult ValidateSpace(int distance)
     {
-        int fuelAmount = (distance * FuelUsageInfo) / 100;
-        return new FuelPlasma(fuelAmount);
-    }
-
-    public int CalculateTime(int distance)
-    {
-        return (int)Math.Log(distance);
-    }
-
-    public DamageResult ValidateSpace(ISpace space)
-    {
-        if (space is not SpaceNebulaDensity)
+        if (distance > JumpDistance)
         {
-            return new Failed.ShipPowerLost();
+            return new EngineResult.Failed();
         }
 
-        if (space.Distance <= JumpDistance)
-        {
-            return new Success.SuccessfulRoad();
-        }
+        IFuel fuel = new FuelPlasma(distance * FuelUsageInfo / 100);
+        int time = (int)Math.Log(distance);
 
-        return new Failed.ShipPowerLost();
+        return new EngineResult.Info(fuel, time);
     }
 }

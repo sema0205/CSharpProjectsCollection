@@ -22,17 +22,11 @@ public class ShipShuttle : IShip, IShipWithPulseEngine
         }
 
         DamageResult resultDeflector = Deflector.GetDamage(damageAmount);
-        if (resultDeflector is Failed.LeftDamage leftDamage)
+        if (resultDeflector is DamageResult.LeftDamage leftDamage)
         {
             return Hull.GetDamage(leftDamage.DamageAmount);
         }
 
         return resultDeflector;
-    }
-
-    public void AddPhotonDeflector()
-    {
-        if (Deflector is not null)
-            Deflector = new PhotonDeflector(Deflector);
     }
 }

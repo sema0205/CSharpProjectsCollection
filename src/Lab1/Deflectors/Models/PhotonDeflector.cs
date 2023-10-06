@@ -4,7 +4,7 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.Deflectors;
 
 public class PhotonDeflector : DeflectorDecorator
 {
-    private const double PhotonCoefficient = 1.3;
+    private const double PhotonDamage = 34;
 
     public PhotonDeflector(IDeflector deflector)
         : base(deflector) { }
@@ -13,19 +13,17 @@ public class PhotonDeflector : DeflectorDecorator
 
     public override DamageResult GetDamage(double damageAmount)
     {
-        switch (damageAmount)
-        {
-            case >= 21 and <= 25:
-                Health -= PhotonCoefficient * damageAmount;
-                break;
-            default:
-                return Deflector.GetDamage(damageAmount);
-        }
+        return Deflector.GetDamage(damageAmount);
+    }
+
+    public DamageResult PhotonFlash()
+    {
+        Health -= PhotonDamage;
 
         return Health switch
         {
-            <= 0 => new Success.DeflectorDisabled(),
-            _ => new Success.AbsorbedHit(),
+            <= 0 => new DamageResult.DeflectorDisabled(),
+            _ => new DamageResult.AbsorbedHit(),
         };
     }
 }

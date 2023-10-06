@@ -4,9 +4,9 @@ using Itmo.ObjectOrientedProgramming.Lab1.Ships.Models;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Tests;
 
-public class Test3DataGenerator : IEnumerable<object[]>
+public class AvgurAndShuttleInNebulaDataGenerator : IEnumerable<object[]>
 {
-    private readonly List<object[]> _ships = new List<object[]> { new object[] { new ShipVacklas(), new ShipAvgur(), new ShipMeridian() } };
+    private readonly List<object[]> _ships = new List<object[]> { new object[] { new ShipShuttle(), new ShipAvgur() } };
 
     public IEnumerator<object[]> GetEnumerator() => _ships.GetEnumerator();
 

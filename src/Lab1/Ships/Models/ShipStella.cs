@@ -12,7 +12,7 @@ public class ShipStella : IShip, IShipWithPulseEngine, IShipWithJumpEngine
 
     public IEngineJump JumpEngine { get; } = new EngineJumpOmega();
 
-    public IDeflector? Deflector { get; set; } = new Deflector1();
+    public IDeflector Deflector { get; set; } = new Deflector1();
 
     public IHull Hull { get; } = new HullClass1();
 
@@ -24,17 +24,11 @@ public class ShipStella : IShip, IShipWithPulseEngine, IShipWithJumpEngine
         }
 
         DamageResult resultDeflector = Deflector.GetDamage(damageAmount);
-        if (resultDeflector is Failed.LeftDamage leftDamage)
+        if (resultDeflector is DamageResult.LeftDamage leftDamage)
         {
             return Hull.GetDamage(leftDamage.DamageAmount);
         }
 
         return resultDeflector;
-    }
-
-    public void AddPhotonDeflector()
-    {
-        if (Deflector is not null)
-            Deflector = new PhotonDeflector(Deflector);
     }
 }

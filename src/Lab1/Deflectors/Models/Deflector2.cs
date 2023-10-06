@@ -5,11 +5,11 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.Deflectors;
 
 public class Deflector2 : IDeflector
 {
-    private const double AsteroidCoefficient = 2.5;
+    private const double SmallDamage = 2.5;
 
-    private const double MeteoroidCoefficient = 4.2;
+    private const double MiddleDamage = 4.2;
 
-    private const double WhaleCoefficient = 6;
+    private const double HighDamage = 6;
 
     public double Health { get; private set; } = 100;
 
@@ -17,7 +17,7 @@ public class Deflector2 : IDeflector
     {
         if (Health <= 0)
         {
-            return new Success.DeflectorDisabled();
+            return new DamageResult.DeflectorDisabled();
         }
 
         double leftDamage = 0;
@@ -25,16 +25,16 @@ public class Deflector2 : IDeflector
         switch (damageAmount)
         {
             case >= 1 and <= 5:
-                Health -= AsteroidCoefficient * damageAmount;
-                leftDamage = Math.Abs(Health) / AsteroidCoefficient;
+                Health -= SmallDamage * damageAmount;
+                leftDamage = Math.Abs(Health) / SmallDamage;
                 break;
             case >= 6 and <= 10:
-                Health -= MeteoroidCoefficient * damageAmount;
-                leftDamage = Math.Abs(Health) / MeteoroidCoefficient;
+                Health -= MiddleDamage * damageAmount;
+                leftDamage = Math.Abs(Health) / MiddleDamage;
                 break;
             case >= 11 and <= 20:
-                Health -= WhaleCoefficient * damageAmount;
-                leftDamage = Math.Abs(Health) / WhaleCoefficient;
+                Health -= HighDamage * damageAmount;
+                leftDamage = Math.Abs(Health) / HighDamage;
                 break;
             default:
                 Health = 0;
@@ -43,9 +43,9 @@ public class Deflector2 : IDeflector
 
         return Health switch
         {
-            0 => new Success.DeflectorDisabled(),
-            < 0 => new Failed.LeftDamage(Math.Abs(leftDamage)),
-            _ => new Success.AbsorbedHit(),
+            0 => new DamageResult.DeflectorDisabled(),
+            < 0 => new DamageResult.LeftDamage(Math.Abs(leftDamage)),
+            _ => new DamageResult.AbsorbedHit(),
         };
     }
 }
