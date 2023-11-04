@@ -7,13 +7,10 @@ public class RecipientUser : IRecipient
 {
     private readonly User _user;
 
-    public RecipientUser(User user, int importanceLevel)
+    public RecipientUser(User user)
     {
         _user = user;
-        ImportanceLevel = importanceLevel;
     }
-
-    public int ImportanceLevel { get; }
 
     public void SendMessage(Message message)
     {

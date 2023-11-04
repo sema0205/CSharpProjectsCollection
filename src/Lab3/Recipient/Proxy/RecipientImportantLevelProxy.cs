@@ -5,17 +5,17 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.Recipients;
 public class RecipientImportantLevelProxy : IRecipient
 {
     private readonly IRecipient _recipient;
+    private readonly int _importanceLevel;
 
-    public RecipientImportantLevelProxy(IRecipient recipient)
+    public RecipientImportantLevelProxy(IRecipient recipient, int importanceLevel)
     {
         _recipient = recipient;
+        _importanceLevel = importanceLevel;
     }
-
-    public int ImportanceLevel { get; }
 
     public void SendMessage(Message message)
     {
-        if (message.ImportanceLevel <= _recipient.ImportanceLevel)
+        if (message.ImportanceLevel <= _importanceLevel)
         {
             _recipient.SendMessage(message);
         }

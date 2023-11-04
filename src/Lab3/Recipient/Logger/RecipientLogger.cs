@@ -12,10 +12,7 @@ public class RecipientLogger : IRecipient
     {
         _logger = logger;
         _recipient = recipient;
-        ImportanceLevel = _recipient.ImportanceLevel;
     }
-
-    public int ImportanceLevel { get; }
 
     public void SendMessage(Message message)
     {

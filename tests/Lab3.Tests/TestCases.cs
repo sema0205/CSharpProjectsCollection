@@ -1,3 +1,4 @@
+using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab3.ConsoleWriter;
 using Itmo.ObjectOrientedProgramming.Lab3.Logger;
 using Itmo.ObjectOrientedProgramming.Lab3.Messages;
@@ -19,14 +20,14 @@ public class TestCases
     {
         var user = new User();
 
-        IRecipient recipientUser = new RecipientUser(user, 5);
-        IRecipient recipientProxy = new RecipientImportantLevelProxy(recipientUser);
+        IRecipient recipientUser = new RecipientUser(user);
+        IRecipient recipientProxy = new RecipientImportantLevelProxy(recipientUser, 5);
 
         ITopic topic = new Topic(recipientProxy, "TopicName");
         var message = new Message("Title", "Body", 2);
 
         topic.SendMessage(message);
-        Assert.False(user.MessagesStatuses[0].Status);
+        Assert.False(user.MessagesStatuses.First().Status);
     }
 
     [Fact]
@@ -34,18 +35,18 @@ public class TestCases
     {
         var user = new User();
 
-        IRecipient recipientUser = new RecipientUser(user, 5);
-        IRecipient recipientProxy = new RecipientImportantLevelProxy(recipientUser);
+        IRecipient recipientUser = new RecipientUser(user);
+        IRecipient recipientProxy = new RecipientImportantLevelProxy(recipientUser, 5);
 
         ITopic topic = new Topic(recipientProxy, "TopicName");
         var message = new Message("Title", "Body", 2);
 
         topic.SendMessage(message);
-        Assert.False(user.MessagesStatuses[0].Status);
+        Assert.False(user.MessagesStatuses.First().Status);
 
         UserReadMessageResult readMessageResult = user.ReadMessage(message);
         Assert.Equal(new UserReadMessageResult.Success(), readMessageResult);
-        Assert.True(user.MessagesStatuses[0].Status);
+        Assert.True(user.MessagesStatuses.First().Status);
     }
 
     [Fact]
@@ -53,18 +54,18 @@ public class TestCases
     {
         var user = new User();
 
-        IRecipient recipientUser = new RecipientUser(user, 5);
-        IRecipient recipientProxy = new RecipientImportantLevelProxy(recipientUser);
+        IRecipient recipientUser = new RecipientUser(user);
+        IRecipient recipientProxy = new RecipientImportantLevelProxy(recipientUser, 5);
 
         ITopic topic = new Topic(recipientProxy, "TopicName");
         var message = new Message("Title", "Body", 2);
 
         topic.SendMessage(message);
-        Assert.False(user.MessagesStatuses[0].Status);
+        Assert.False(user.MessagesStatuses.First().Status);
 
         UserReadMessageResult readMessageResult = user.ReadMessage(message);
         Assert.Equal(new UserReadMessageResult.Success(), readMessageResult);
-        Assert.True(user.MessagesStatuses[0].Status);
+        Assert.True(user.MessagesStatuses.First().Status);
 
         UserReadMessageResult readMessageSecondTryResult = user.ReadMessage(message);
         Assert.Equal(new UserReadMessageResult.MessageWasAlreadyRead(), readMessageSecondTryResult);
@@ -76,9 +77,9 @@ public class TestCases
         ILogger userLoggerMock = Substitute.For<ILogger>();
         var user = new User();
 
-        IRecipient recipientUser = new RecipientUser(user, 4);
+        IRecipient recipientUser = new RecipientUser(user);
         IRecipient recipientLogger = new RecipientLogger(userLoggerMock, recipientUser);
-        IRecipient recipientProxy = new RecipientImportantLevelProxy(recipientLogger);
+        IRecipient recipientProxy = new RecipientImportantLevelProxy(recipientLogger, 4);
 
         ITopic topic = new Topic(recipientProxy, "TopicName");
         var message = new Message("Title", "Body", 6);
@@ -94,9 +95,9 @@ public class TestCases
         ILogger userLoggerMock = Substitute.For<ILogger>();
         var user = new User();
 
-        IRecipient recipientUser = new RecipientUser(user, 5);
+        IRecipient recipientUser = new RecipientUser(user);
         IRecipient recipientLogger = new RecipientLogger(userLoggerMock, recipientUser);
-        IRecipient recipientProxy = new RecipientImportantLevelProxy(recipientLogger);
+        IRecipient recipientProxy = new RecipientImportantLevelProxy(recipientLogger, 5);
 
         ITopic topic = new Topic(recipientProxy, "TopicName");
         var message = new Message("Title", "Body", 2);
@@ -112,8 +113,8 @@ public class TestCases
         IConsoleWriter messengerWriterMock = Substitute.For<IConsoleWriter>();
         var messenger = new Messenger(messengerWriterMock);
 
-        IRecipient recipientMessenger = new RecipientMessenger(messenger, 3);
-        IRecipient recipientProxy = new RecipientImportantLevelProxy(recipientMessenger);
+        IRecipient recipientMessenger = new RecipientMessenger(messenger);
+        IRecipient recipientProxy = new RecipientImportantLevelProxy(recipientMessenger, 3);
 
         ITopic topic = new Topic(recipientProxy, "TopicName");
         var message = new Message("Title", "Body", 2);

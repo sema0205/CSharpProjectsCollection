@@ -7,13 +7,10 @@ public class RecipientDisplay : IRecipient
 {
     private readonly Display _display;
 
-    public RecipientDisplay(Display display, int importanceLevel)
+    public RecipientDisplay(Display display)
     {
         _display = display;
-        ImportanceLevel = importanceLevel;
     }
-
-    public int ImportanceLevel { get; }
 
     public void SendMessage(Message message)
     {

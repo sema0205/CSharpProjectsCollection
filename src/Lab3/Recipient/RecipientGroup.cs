@@ -6,20 +6,18 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.Recipients;
 
 public class RecipientGroup : IRecipient
 {
-    private readonly IReadOnlyList<IRecipient> _recipients;
+    private readonly List<IRecipient> _recipients;
 
-    public RecipientGroup(IEnumerable<IRecipient> recipients, int importanceLevel)
+    public RecipientGroup(IEnumerable<IRecipient> recipients)
     {
         _recipients = recipients.ToList();
-        ImportanceLevel = importanceLevel;
     }
-
-    public int ImportanceLevel { get; }
 
     public void SendMessage(Message message)
     {
-        _recipients
-            .ToList()
-            .ForEach(recipient => recipient.SendMessage(message));
+        foreach (IRecipient recipient in _recipients)
+        {
+            recipient.SendMessage(message);
+        }
     }
 }

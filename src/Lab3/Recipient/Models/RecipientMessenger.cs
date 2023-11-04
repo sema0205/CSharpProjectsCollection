@@ -7,13 +7,10 @@ public class RecipientMessenger : IRecipient
 {
     private readonly Messenger _messenger;
 
-    public RecipientMessenger(Messenger messenger, int importanceLevel)
+    public RecipientMessenger(Messenger messenger)
     {
         _messenger = messenger;
-        ImportanceLevel = importanceLevel;
     }
-
-    public int ImportanceLevel { get; }
 
     public void SendMessage(Message message)
     {

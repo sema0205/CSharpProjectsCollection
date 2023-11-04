@@ -7,27 +7,29 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.Users;
 
 public class User
 {
+    private readonly List<MessageStatus> _messagesStatuses;
+
     public User()
     {
-        MessagesStatuses = new List<MessageStatus>();
+        _messagesStatuses = new List<MessageStatus>();
     }
 
-    public IList<MessageStatus> MessagesStatuses { get; }
+    public IReadOnlyCollection<MessageStatus> MessagesStatuses => _messagesStatuses;
 
     public void SendMessage(Message message)
     {
-        MessagesStatuses.Add(new MessageStatus(message, false));
+        _messagesStatuses.Add(new MessageStatus(message, false));
     }
 
     public UserReadMessageResult ReadMessage(Message message)
     {
-        MessageStatus messageStatus = MessagesStatuses.Single(m => m.Message == message);
+        MessageStatus messageStatus = _messagesStatuses.Single(m => m.Message == message);
 
         if (messageStatus.Status)
             return new UserReadMessageResult.MessageWasAlreadyRead();
 
-        MessagesStatuses.Remove(messageStatus);
-        MessagesStatuses.Add(new MessageStatus(message, true));
+        _messagesStatuses.Remove(messageStatus);
+        _messagesStatuses.Add(new MessageStatus(message, true));
         return new UserReadMessageResult.Success();
     }
 }

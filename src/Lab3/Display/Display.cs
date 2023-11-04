@@ -13,6 +13,7 @@ public class Display
 
     public void PrintMessage(Message message)
     {
+        _displayDriver.ClearMessage();
         _displayDriver.ExportMessage(message);
     }
 }
