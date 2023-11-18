@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using Itmo.ObjectOrientedProgramming.Lab4.FilesComposite;
-using Itmo.ObjectOrientedProgramming.Lab4.FilesComposite.Visitor;
 using Itmo.ObjectOrientedProgramming.Lab4.FileSystem.Commands;
 using Itmo.ObjectOrientedProgramming.Lab4.Path;
 
@@ -34,9 +33,7 @@ public class FileSystem : IFileSystem
     public CommandExecutionResult TreeList(int depth)
     {
         var composite = new Composite(_globalPath, depth);
-        var visitor = new SpecificVisitor();
-        composite.Component.Accept(visitor);
-        return new CommandExecutionResult.Success();
+        return new CommandExecutionResult.Composite(composite.Component);
     }
 
     public CommandExecutionResult FileShow(IPath path, string mode)
