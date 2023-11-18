@@ -5,10 +5,17 @@ namespace Itmo.ObjectOrientedProgramming.Lab4.FilesComposite.Visitor;
 
 public class SpecificVisitor : IVisitor<DirectoryComponent>, IVisitor<FileComponent>
 {
-    private readonly string _indent = "\t";
-    private readonly string _folder = "🗂";
-    private readonly string _file = "📁";
+    private readonly string _indent;
+    private readonly string _folder;
+    private readonly string _file;
     private int _depth;
+
+    public SpecificVisitor(TreeParameters treeParameters)
+    {
+        _indent = treeParameters.Ident;
+        _folder = treeParameters.Folder;
+        _file = treeParameters.File;
+    }
 
     public void Visit(DirectoryComponent fileSystemComponent)
     {

@@ -13,11 +13,11 @@ public class ModeHandler : IArgumentHandler<ConnectBuilder>
         return _next;
     }
 
-    public ArgumentHandlerResult HandleArgumentRequest(ArgumentHandlerContext<ConnectBuilder> argumentHandlerContext)
+    public ArgumentHandlerResult<ConnectBuilder> HandleArgumentRequest(ArgumentHandlerContext<ConnectBuilder> argumentHandlerContext)
     {
         if (argumentHandlerContext.CommandIterator.GetCurrent() != "-m")
         {
-            return _next is not null ? _next.HandleArgumentRequest(argumentHandlerContext) : new ArgumentHandlerResult.Failed();
+            return _next is not null ? _next.HandleArgumentRequest(argumentHandlerContext) : new ArgumentHandlerResult<ConnectBuilder>.Failed();
         }
 
         argumentHandlerContext.CommandIterator.MoveNext();
@@ -27,6 +27,6 @@ public class ModeHandler : IArgumentHandler<ConnectBuilder>
         if (_next is not null && argumentHandlerContext.CommandIterator.HasMore())
             return _next.HandleArgumentRequest(argumentHandlerContext);
 
-        return new ArgumentHandlerResult.Success<ConnectBuilder>(argumentHandlerContext.ContextBuilder);
+        return new ArgumentHandlerResult<ConnectBuilder>.Success(argumentHandlerContext.ContextBuilder);
     }
 }

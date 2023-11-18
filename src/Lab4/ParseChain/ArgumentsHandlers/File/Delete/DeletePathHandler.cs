@@ -12,7 +12,7 @@ public class DeletePathHandler : IArgumentHandler<FileDeleteBuilder>
         return argumentHandler;
     }
 
-    public ArgumentHandlerResult HandleArgumentRequest(ArgumentHandlerContext<FileDeleteBuilder> argumentHandlerContext)
+    public ArgumentHandlerResult<FileDeleteBuilder> HandleArgumentRequest(ArgumentHandlerContext<FileDeleteBuilder> argumentHandlerContext)
     {
         argumentHandlerContext.ContextBuilder.WithPath(argumentHandlerContext.CommandIterator.GetCurrent());
         argumentHandlerContext.CommandIterator.MoveNext();
@@ -20,6 +20,6 @@ public class DeletePathHandler : IArgumentHandler<FileDeleteBuilder>
         if (_next is not null && argumentHandlerContext.CommandIterator.HasMore())
             return _next.HandleArgumentRequest(argumentHandlerContext);
 
-        return new ArgumentHandlerResult.Success<FileDeleteBuilder>(argumentHandlerContext.ContextBuilder);
+        return new ArgumentHandlerResult<FileDeleteBuilder>.Success(argumentHandlerContext.ContextBuilder);
     }
 }

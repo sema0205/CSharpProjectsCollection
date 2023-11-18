@@ -22,14 +22,14 @@ public class CopyHandler : ICommandHandler
             return new CommandHandlerResult.Failed();
 
         commandHandlerContext.CommandIterator.MoveNext();
-        ArgumentHandlerResult builder = new ArgumentHandlerResult.Failed();
+        ArgumentHandlerResult<FileCopyBuilder> builder = new ArgumentHandlerResult<FileCopyBuilder>.Failed();
         while (commandHandlerContext.CommandIterator.HasMore())
         {
             builder = _nextArgumentHandler.HandleArgumentRequest(
                 new ArgumentHandlerContext<FileCopyBuilder>(commandHandlerContext.CommandIterator, new FileCopyBuilder()));
         }
 
-        if (builder is ArgumentHandlerResult.Success<FileCopyBuilder> commandContext)
+        if (builder is ArgumentHandlerResult<FileCopyBuilder>.Success commandContext)
             return new CommandHandlerResult.Success(new CopyCommand(commandContext.Builder.Build()));
 
         return new CommandHandlerResult.Failed();

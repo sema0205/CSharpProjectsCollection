@@ -1,10 +1,10 @@
 namespace Itmo.ObjectOrientedProgramming.Lab4.ParseChain;
 
-public record ArgumentHandlerResult
+public record ArgumentHandlerResult<T>
 {
     private ArgumentHandlerResult() { }
 
-    public sealed record Success<T>(T Builder) : ArgumentHandlerResult;
+    public sealed record Success(T Builder) : ArgumentHandlerResult<T>;
 
-    public sealed record Failed : ArgumentHandlerResult;
+    public sealed record Failed : ArgumentHandlerResult<T>;
 }

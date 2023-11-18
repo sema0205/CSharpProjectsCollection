@@ -1,5 +1,5 @@
 using System;
-using Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.ArgumentsBuilders;
+using Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.File;
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.Builders;
 
@@ -20,9 +20,9 @@ public sealed class FileRenameBuilder
         return this;
     }
 
-    public ArgumentContext.FileRenameCommandContext Build()
+    public FileRenameCommandContext Build()
     {
-        return new ArgumentContext.FileRenameCommandContext(
+        return new FileRenameCommandContext(
             _path ?? throw new ArgumentNullException(nameof(_path)),
             _newName ?? throw new ArgumentNullException(nameof(_newName)));
     }

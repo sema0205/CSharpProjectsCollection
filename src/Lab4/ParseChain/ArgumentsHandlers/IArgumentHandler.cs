@@ -4,5 +4,5 @@ public interface IArgumentHandler<T>
 {
     IArgumentHandler<T> SetNextArgumentHandler(IArgumentHandler<T> argumentHandler);
 
-    ArgumentHandlerResult HandleArgumentRequest(ArgumentHandlerContext<T> argumentHandlerContext);
+    ArgumentHandlerResult<T> HandleArgumentRequest(ArgumentHandlerContext<T> argumentHandlerContext);
 }

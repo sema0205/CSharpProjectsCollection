@@ -12,18 +12,18 @@ public class ListDepthHandler : IArgumentHandler<TreeListBuilder>
         return argumentHandler;
     }
 
-    public ArgumentHandlerResult HandleArgumentRequest(ArgumentHandlerContext<TreeListBuilder> argumentHandlerContext)
+    public ArgumentHandlerResult<TreeListBuilder> HandleArgumentRequest(ArgumentHandlerContext<TreeListBuilder> argumentHandlerContext)
     {
         if (argumentHandlerContext.CommandIterator.GetCurrent() != "-d")
         {
-            return _next is not null ? _next.HandleArgumentRequest(argumentHandlerContext) : new ArgumentHandlerResult.Failed();
+            return _next is not null ? _next.HandleArgumentRequest(argumentHandlerContext) : new ArgumentHandlerResult<TreeListBuilder>.Failed();
         }
 
         argumentHandlerContext.CommandIterator.MoveNext();
 
         bool result = int.TryParse(argumentHandlerContext.CommandIterator.GetCurrent(), out int depth);
         if (!result)
-            return new ArgumentHandlerResult.Failed();
+            return new ArgumentHandlerResult<TreeListBuilder>.Failed();
 
         argumentHandlerContext.ContextBuilder.WithDepth(depth);
         argumentHandlerContext.CommandIterator.MoveNext();
@@ -31,6 +31,6 @@ public class ListDepthHandler : IArgumentHandler<TreeListBuilder>
         if (_next is not null && argumentHandlerContext.CommandIterator.HasMore())
             return _next.HandleArgumentRequest(argumentHandlerContext);
 
-        return new ArgumentHandlerResult.Success<TreeListBuilder>(argumentHandlerContext.ContextBuilder);
+        return new ArgumentHandlerResult<TreeListBuilder>.Success(argumentHandlerContext.ContextBuilder);
     }
 }

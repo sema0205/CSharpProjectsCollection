@@ -18,36 +18,21 @@ public class FileSystem : IFileSystem
         _mode = mode;
     }
 
-    public CommandExecutionResult TreeGoTo(IPath path)
-    {
-        string source = path.ToStringView();
-
-        if (!System.IO.Path.IsPathRooted(path.ToStringView()))
-            source = System.IO.Path.Combine(new[] { _globalPath.ToStringView(), path.ToStringView() });
-
-        _globalPath = new SimplePath(source);
-
-        return new CommandExecutionResult.Success();
-    }
-
     public CommandExecutionResult TreeList(int depth)
     {
         var composite = new Composite(_globalPath, depth);
         return new CommandExecutionResult.Composite(composite.Component);
     }
 
-    public CommandExecutionResult FileShow(IPath path, string mode)
+    public CommandExecutionResult FileShow(IPath path, IDrawer drawer)
     {
-        if (mode != "console")
-            return new CommandExecutionResult.Failed();
-
         if (System.IO.Path.IsPathRooted(path.ToStringView()))
         {
             Console.WriteLine(File.ReadAllText(path.ToStringView()));
             return new CommandExecutionResult.Success();
         }
 
-        Console.WriteLine(File.ReadAllText(System.IO.Path.Combine(new[] { _globalPath.ToStringView(), path.ToStringView() })));
+        drawer.Draw(File.ReadAllText(System.IO.Path.Combine(new[] { _globalPath.ToStringView(), path.ToStringView() })));
         return new CommandExecutionResult.Success();
     }
 

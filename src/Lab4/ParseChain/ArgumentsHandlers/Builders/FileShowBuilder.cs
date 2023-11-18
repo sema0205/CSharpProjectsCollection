@@ -1,5 +1,5 @@
 using System;
-using Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.ArgumentsBuilders;
+using Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.File;
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.Builders;
 
@@ -20,9 +20,9 @@ public sealed class FileShowBuilder
         return this;
     }
 
-    public ArgumentContext.FileShowCommandContext Build()
+    public FileShowCommandContext Build()
     {
-        return new ArgumentContext.FileShowCommandContext(
+        return new FileShowCommandContext(
             _path ?? throw new ArgumentNullException(nameof(_path)),
             _mode ?? throw new ArgumentNullException(nameof(_mode)));
     }

@@ -1,4 +1,4 @@
-using Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.ArgumentsBuilders;
+using Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.Tree;
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.Builders;
 
@@ -12,8 +12,8 @@ public class TreeListBuilder
         return this;
     }
 
-    public ArgumentContext.TreeListCommandContext Build()
+    public TreeListCommandContext Build()
     {
-        return new ArgumentContext.TreeListCommandContext(_depth);
+        return new TreeListCommandContext(_depth);
     }
 }

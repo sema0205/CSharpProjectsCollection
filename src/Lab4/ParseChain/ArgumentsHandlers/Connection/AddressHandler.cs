@@ -13,7 +13,7 @@ public class AddressHandler : IArgumentHandler<ConnectBuilder>
         return _next;
     }
 
-    public ArgumentHandlerResult HandleArgumentRequest(ArgumentHandlerContext<ConnectBuilder> argumentHandlerContext)
+    public ArgumentHandlerResult<ConnectBuilder> HandleArgumentRequest(ArgumentHandlerContext<ConnectBuilder> argumentHandlerContext)
     {
         argumentHandlerContext.ContextBuilder.WithPath(argumentHandlerContext.CommandIterator.GetCurrent());
         argumentHandlerContext.CommandIterator.MoveNext();
@@ -21,6 +21,6 @@ public class AddressHandler : IArgumentHandler<ConnectBuilder>
         if (_next is not null && argumentHandlerContext.CommandIterator.HasMore())
             return _next.HandleArgumentRequest(argumentHandlerContext);
 
-        return new ArgumentHandlerResult.Success<ConnectBuilder>(argumentHandlerContext.ContextBuilder);
+        return new ArgumentHandlerResult<ConnectBuilder>.Success(argumentHandlerContext.ContextBuilder);
     }
 }

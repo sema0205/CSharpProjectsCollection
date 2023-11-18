@@ -5,11 +5,9 @@ namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystem;
 
 public interface IFileSystem
 {
-    CommandExecutionResult TreeGoTo(IPath path);
-
     CommandExecutionResult TreeList(int depth);
 
-    CommandExecutionResult FileShow(IPath path, string mode);
+    CommandExecutionResult FileShow(IPath path, IDrawer drawer);
 
     CommandExecutionResult FileMove(IPath sourcePath, IPath destinationPath);
 

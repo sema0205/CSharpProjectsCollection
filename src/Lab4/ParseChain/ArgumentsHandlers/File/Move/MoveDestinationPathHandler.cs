@@ -12,7 +12,7 @@ public class MoveDestinationPathHandler : IArgumentHandler<FileMoveBuilder>
         return _next;
     }
 
-    public ArgumentHandlerResult HandleArgumentRequest(ArgumentHandlerContext<FileMoveBuilder> argumentHandlerContext)
+    public ArgumentHandlerResult<FileMoveBuilder> HandleArgumentRequest(ArgumentHandlerContext<FileMoveBuilder> argumentHandlerContext)
     {
         argumentHandlerContext.ContextBuilder.WithSourcePath(argumentHandlerContext.CommandIterator.GetCurrent());
         argumentHandlerContext.CommandIterator.MoveNext();
@@ -20,6 +20,6 @@ public class MoveDestinationPathHandler : IArgumentHandler<FileMoveBuilder>
         if (_next is not null && argumentHandlerContext.CommandIterator.HasMore())
             return _next.HandleArgumentRequest(argumentHandlerContext);
 
-        return new ArgumentHandlerResult.Success<FileMoveBuilder>(argumentHandlerContext.ContextBuilder);
+        return new ArgumentHandlerResult<FileMoveBuilder>.Success(argumentHandlerContext.ContextBuilder);
     }
 }

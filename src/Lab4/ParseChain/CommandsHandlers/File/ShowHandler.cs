@@ -22,14 +22,14 @@ public class ShowHandler : ICommandHandler
             return new CommandHandlerResult.Failed();
 
         commandHandlerContext.CommandIterator.MoveNext();
-        ArgumentHandlerResult builder = new ArgumentHandlerResult.Failed();
+        ArgumentHandlerResult<FileShowBuilder> builder = new ArgumentHandlerResult<FileShowBuilder>.Failed();
         while (commandHandlerContext.CommandIterator.HasMore())
         {
             builder = _nextArgumentHandler.HandleArgumentRequest(
                 new ArgumentHandlerContext<FileShowBuilder>(commandHandlerContext.CommandIterator, new FileShowBuilder()));
         }
 
-        if (builder is ArgumentHandlerResult.Success<FileShowBuilder> commandContext)
+        if (builder is ArgumentHandlerResult<FileShowBuilder>.Success commandContext)
             return new CommandHandlerResult.Success(new ShowCommand(commandContext.Builder.Build()));
 
         return new CommandHandlerResult.Failed();

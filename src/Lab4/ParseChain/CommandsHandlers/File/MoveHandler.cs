@@ -22,14 +22,14 @@ public class MoveHandler : ICommandHandler
             return new CommandHandlerResult.Failed();
 
         commandHandlerContext.CommandIterator.MoveNext();
-        ArgumentHandlerResult builder = new ArgumentHandlerResult.Failed();
+        ArgumentHandlerResult<FileMoveBuilder> builder = new ArgumentHandlerResult<FileMoveBuilder>.Failed();
         while (commandHandlerContext.CommandIterator.HasMore())
         {
             builder = _nextArgumentHandler.HandleArgumentRequest(
                 new ArgumentHandlerContext<FileMoveBuilder>(commandHandlerContext.CommandIterator, new FileMoveBuilder()));
         }
 
-        if (builder is ArgumentHandlerResult.Success<FileMoveBuilder> commandContext)
+        if (builder is ArgumentHandlerResult<FileMoveBuilder>.Success commandContext)
             return new CommandHandlerResult.Success(new MoveCommand(commandContext.Builder.Build()));
 
         return new CommandHandlerResult.Failed();

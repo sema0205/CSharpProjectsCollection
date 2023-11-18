@@ -1,5 +1,5 @@
 using System;
-using Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.ArgumentsBuilders;
+using Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.File;
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.Builders;
 
@@ -20,9 +20,9 @@ public sealed class FileCopyBuilder
         return this;
     }
 
-    public ArgumentContext.FileCopyCommandContext Build()
+    public FileCopyCommandContext Build()
     {
-        return new ArgumentContext.FileCopyCommandContext(
+        return new FileCopyCommandContext(
             _sourcePath ?? throw new ArgumentNullException(nameof(_sourcePath)),
             _destinationPath ?? throw new ArgumentNullException(nameof(_destinationPath)));
     }

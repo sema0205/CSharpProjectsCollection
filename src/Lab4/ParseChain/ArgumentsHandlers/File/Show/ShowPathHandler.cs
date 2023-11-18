@@ -12,7 +12,7 @@ public class ShowPathHandler : IArgumentHandler<FileShowBuilder>
         return argumentHandler;
     }
 
-    public ArgumentHandlerResult HandleArgumentRequest(ArgumentHandlerContext<FileShowBuilder> argumentHandlerContext)
+    public ArgumentHandlerResult<FileShowBuilder> HandleArgumentRequest(ArgumentHandlerContext<FileShowBuilder> argumentHandlerContext)
     {
         argumentHandlerContext.ContextBuilder.WithPath(argumentHandlerContext.CommandIterator.GetCurrent());
         argumentHandlerContext.CommandIterator.MoveNext();
@@ -20,6 +20,6 @@ public class ShowPathHandler : IArgumentHandler<FileShowBuilder>
         if (_next is not null && argumentHandlerContext.CommandIterator.HasMore())
             return _next.HandleArgumentRequest(argumentHandlerContext);
 
-        return new ArgumentHandlerResult.Success<FileShowBuilder>(argumentHandlerContext.ContextBuilder);
+        return new ArgumentHandlerResult<FileShowBuilder>.Success(argumentHandlerContext.ContextBuilder);
     }
 }

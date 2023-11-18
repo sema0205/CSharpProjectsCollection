@@ -22,14 +22,14 @@ public class RenameHandler : ICommandHandler
             return new CommandHandlerResult.Failed();
 
         commandHandlerContext.CommandIterator.MoveNext();
-        ArgumentHandlerResult builder = new ArgumentHandlerResult.Failed();
+        ArgumentHandlerResult<FileRenameBuilder> builder = new ArgumentHandlerResult<FileRenameBuilder>.Failed();
         while (commandHandlerContext.CommandIterator.HasMore())
         {
             builder = _nextArgumentHandler.HandleArgumentRequest(
                 new ArgumentHandlerContext<FileRenameBuilder>(commandHandlerContext.CommandIterator, new FileRenameBuilder()));
         }
 
-        if (builder is ArgumentHandlerResult.Success<FileRenameBuilder> commandContext)
+        if (builder is ArgumentHandlerResult<FileRenameBuilder>.Success commandContext)
             return new CommandHandlerResult.Success(new RenameCommand(commandContext.Builder.Build()));
 
         return new CommandHandlerResult.Failed();

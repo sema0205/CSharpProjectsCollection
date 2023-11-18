@@ -22,14 +22,14 @@ public class DeleteHandler : ICommandHandler
             return new CommandHandlerResult.Failed();
 
         commandHandlerContext.CommandIterator.MoveNext();
-        ArgumentHandlerResult builder = new ArgumentHandlerResult.Failed();
+        ArgumentHandlerResult<FileDeleteBuilder> builder = new ArgumentHandlerResult<FileDeleteBuilder>.Failed();
         while (commandHandlerContext.CommandIterator.HasMore())
         {
             builder = _nextArgumentHandler.HandleArgumentRequest(
                 new ArgumentHandlerContext<FileDeleteBuilder>(commandHandlerContext.CommandIterator, new FileDeleteBuilder()));
         }
 
-        if (builder is ArgumentHandlerResult.Success<FileDeleteBuilder> commandContext)
+        if (builder is ArgumentHandlerResult<FileDeleteBuilder>.Success commandContext)
             return new CommandHandlerResult.Success(new DeleteCommand(commandContext.Builder.Build()));
 
         return new CommandHandlerResult.Failed();

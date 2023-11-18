@@ -22,14 +22,14 @@ public class ListHandler : ICommandHandler
             return new CommandHandlerResult.Failed();
 
         commandHandlerContext.CommandIterator.MoveNext();
-        ArgumentHandlerResult builder = new ArgumentHandlerResult.Success<TreeListBuilder>(new TreeListBuilder());
+        ArgumentHandlerResult<TreeListBuilder> builder = new ArgumentHandlerResult<TreeListBuilder>.Success(new TreeListBuilder());
         while (commandHandlerContext.CommandIterator.HasMore())
         {
             builder = _nextArgumentHandler.HandleArgumentRequest(
                 new ArgumentHandlerContext<TreeListBuilder>(commandHandlerContext.CommandIterator, new TreeListBuilder()));
         }
 
-        if (builder is ArgumentHandlerResult.Success<TreeListBuilder> commandContext)
+        if (builder is ArgumentHandlerResult<TreeListBuilder>.Success commandContext)
             return new CommandHandlerResult.Success(new ListCommand(commandContext.Builder.Build()));
 
         return new CommandHandlerResult.Failed();

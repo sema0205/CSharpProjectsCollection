@@ -1,5 +1,5 @@
 using System;
-using Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.ArgumentsBuilders;
+using Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.Tree;
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.Builders;
 
@@ -13,9 +13,9 @@ public class TreeGoToBuilder
         return this;
     }
 
-    public ArgumentContext.TreeGoToCommandContext Build()
+    public TreeGoToCommandContext Build()
     {
-        return new ArgumentContext.TreeGoToCommandContext(
+        return new TreeGoToCommandContext(
             _path ?? throw new ArgumentNullException(nameof(_path)));
     }
 }

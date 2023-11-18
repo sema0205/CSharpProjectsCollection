@@ -12,11 +12,11 @@ public class ShowModeHandler : IArgumentHandler<FileShowBuilder>
         return argumentHandler;
     }
 
-    public ArgumentHandlerResult HandleArgumentRequest(ArgumentHandlerContext<FileShowBuilder> argumentHandlerContext)
+    public ArgumentHandlerResult<FileShowBuilder> HandleArgumentRequest(ArgumentHandlerContext<FileShowBuilder> argumentHandlerContext)
     {
         if (argumentHandlerContext.CommandIterator.GetCurrent() != "-m")
         {
-            return _next is not null ? _next.HandleArgumentRequest(argumentHandlerContext) : new ArgumentHandlerResult.Failed();
+            return _next is not null ? _next.HandleArgumentRequest(argumentHandlerContext) : new ArgumentHandlerResult<FileShowBuilder>.Failed();
         }
 
         argumentHandlerContext.CommandIterator.MoveNext();
@@ -26,6 +26,6 @@ public class ShowModeHandler : IArgumentHandler<FileShowBuilder>
         if (_next is not null && argumentHandlerContext.CommandIterator.HasMore())
             return _next.HandleArgumentRequest(argumentHandlerContext);
 
-        return new ArgumentHandlerResult.Success<FileShowBuilder>(argumentHandlerContext.ContextBuilder);
+        return new ArgumentHandlerResult<FileShowBuilder>.Success(argumentHandlerContext.ContextBuilder);
     }
 }

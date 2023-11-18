@@ -1,5 +1,5 @@
 using System;
-using Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.ArgumentsBuilders;
+using Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.File;
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.Builders;
 
@@ -13,9 +13,9 @@ public sealed class FileDeleteBuilder
         return this;
     }
 
-    public ArgumentContext.FileDeleteCommandContext Build()
+    public FileDeleteCommandContext Build()
     {
-        return new ArgumentContext.FileDeleteCommandContext(
+        return new FileDeleteCommandContext(
             _path ?? throw new ArgumentNullException(nameof(_path)));
     }
 }

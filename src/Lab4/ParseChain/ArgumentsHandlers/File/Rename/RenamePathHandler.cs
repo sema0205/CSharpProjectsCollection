@@ -12,7 +12,7 @@ public class RenamePathHandler : IArgumentHandler<FileRenameBuilder>
         return argumentHandler;
     }
 
-    public ArgumentHandlerResult HandleArgumentRequest(ArgumentHandlerContext<FileRenameBuilder> argumentHandlerContext)
+    public ArgumentHandlerResult<FileRenameBuilder> HandleArgumentRequest(ArgumentHandlerContext<FileRenameBuilder> argumentHandlerContext)
     {
         argumentHandlerContext.ContextBuilder.WithPath(argumentHandlerContext.CommandIterator.GetCurrent());
         argumentHandlerContext.CommandIterator.MoveNext();
@@ -20,6 +20,6 @@ public class RenamePathHandler : IArgumentHandler<FileRenameBuilder>
         if (_next is not null && argumentHandlerContext.CommandIterator.HasMore())
             return _next.HandleArgumentRequest(argumentHandlerContext);
 
-        return new ArgumentHandlerResult.Success<FileRenameBuilder>(argumentHandlerContext.ContextBuilder);
+        return new ArgumentHandlerResult<FileRenameBuilder>.Success(argumentHandlerContext.ContextBuilder);
     }
 }

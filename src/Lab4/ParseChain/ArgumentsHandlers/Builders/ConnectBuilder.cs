@@ -1,5 +1,5 @@
 using System;
-using Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.ArgumentsBuilders;
+using Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsParseHandlers.ConnectionArguments;
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.Builders;
 
@@ -20,9 +20,9 @@ public class ConnectBuilder
         return this;
     }
 
-    public ArgumentContext.ConnectCommandContext Build()
+    public ConnectCommandContext Build()
     {
-        return new ArgumentContext.ConnectCommandContext(
+        return new ConnectCommandContext(
             _path ?? throw new ArgumentNullException(nameof(_path)),
             _mode ?? throw new ArgumentNullException(nameof(_mode)));
     }

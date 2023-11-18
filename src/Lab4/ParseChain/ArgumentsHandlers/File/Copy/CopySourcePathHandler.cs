@@ -12,7 +12,7 @@ public class CopySourcePathHandler : IArgumentHandler<FileCopyBuilder>
         return argumentHandler;
     }
 
-    public ArgumentHandlerResult HandleArgumentRequest(ArgumentHandlerContext<FileCopyBuilder> argumentHandlerContext)
+    public ArgumentHandlerResult<FileCopyBuilder> HandleArgumentRequest(ArgumentHandlerContext<FileCopyBuilder> argumentHandlerContext)
     {
         argumentHandlerContext.ContextBuilder.WithSourcePath(argumentHandlerContext.CommandIterator.GetCurrent());
         argumentHandlerContext.CommandIterator.MoveNext();
@@ -20,6 +20,6 @@ public class CopySourcePathHandler : IArgumentHandler<FileCopyBuilder>
         if (_next is not null && argumentHandlerContext.CommandIterator.HasMore())
             return _next.HandleArgumentRequest(argumentHandlerContext);
 
-        return new ArgumentHandlerResult.Success<FileCopyBuilder>(argumentHandlerContext.ContextBuilder);
+        return new ArgumentHandlerResult<FileCopyBuilder>.Success(argumentHandlerContext.ContextBuilder);
     }
 }

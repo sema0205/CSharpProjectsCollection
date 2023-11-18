@@ -12,7 +12,7 @@ public class GotoPathHandler : IArgumentHandler<TreeGoToBuilder>
         return argumentHandler;
     }
 
-    public ArgumentHandlerResult HandleArgumentRequest(ArgumentHandlerContext<TreeGoToBuilder> argumentHandlerContext)
+    public ArgumentHandlerResult<TreeGoToBuilder> HandleArgumentRequest(ArgumentHandlerContext<TreeGoToBuilder> argumentHandlerContext)
     {
         argumentHandlerContext.ContextBuilder.WithPath(argumentHandlerContext.CommandIterator.GetCurrent());
         argumentHandlerContext.CommandIterator.MoveNext();
@@ -20,6 +20,6 @@ public class GotoPathHandler : IArgumentHandler<TreeGoToBuilder>
         if (_next is not null && argumentHandlerContext.CommandIterator.HasMore())
             return _next.HandleArgumentRequest(argumentHandlerContext);
 
-        return new ArgumentHandlerResult.Success<TreeGoToBuilder>(argumentHandlerContext.ContextBuilder);
+        return new ArgumentHandlerResult<TreeGoToBuilder>.Success(argumentHandlerContext.ContextBuilder);
     }
 }

@@ -22,14 +22,14 @@ public class GoToHandler : ICommandHandler
             return new CommandHandlerResult.Failed();
 
         commandHandlerContext.CommandIterator.MoveNext();
-        ArgumentHandlerResult builder = new ArgumentHandlerResult.Failed();
+        ArgumentHandlerResult<TreeGoToBuilder> builder = new ArgumentHandlerResult<TreeGoToBuilder>.Failed();
         while (commandHandlerContext.CommandIterator.HasMore())
         {
             builder = _nextArgumentHandler.HandleArgumentRequest(
                 new ArgumentHandlerContext<TreeGoToBuilder>(commandHandlerContext.CommandIterator, new TreeGoToBuilder()));
         }
 
-        if (builder is ArgumentHandlerResult.Success<TreeGoToBuilder> commandContext)
+        if (builder is ArgumentHandlerResult<TreeGoToBuilder>.Success commandContext)
             return new CommandHandlerResult.Success(new GoToCommand(commandContext.Builder.Build()));
 
         return new CommandHandlerResult.Failed();

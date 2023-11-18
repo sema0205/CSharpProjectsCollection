@@ -1,3 +1,4 @@
+using Itmo.ObjectOrientedProgramming.Lab4.FileSystem.Commands.Connection;
 using Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers;
 using Itmo.ObjectOrientedProgramming.Lab4.ParseChain.ArgumentsHandlers.Builders;
 
@@ -21,15 +22,15 @@ public class ConnectHandler : ICommandHandler
             return new CommandHandlerResult.Failed();
 
         commandHandlerContext.CommandIterator.MoveNext();
-        ArgumentHandlerResult builder = new ArgumentHandlerResult.Failed();
+        ArgumentHandlerResult<ConnectBuilder> builder = new ArgumentHandlerResult<ConnectBuilder>.Failed();
         while (commandHandlerContext.CommandIterator.HasMore())
         {
             builder = _nextArgumentHandler.HandleArgumentRequest(
                 new ArgumentHandlerContext<ConnectBuilder>(commandHandlerContext.CommandIterator, new ConnectBuilder()));
         }
 
-        if (builder is ArgumentHandlerResult.Success<ConnectBuilder> connectCommandContext)
-            return new CommandHandlerResult.ConnectCommand(connectCommandContext.Builder.Build());
+        if (builder is ArgumentHandlerResult<ConnectBuilder>.Success connectCommandContext)
+            return new CommandHandlerResult.Success(new ConnectCommand(connectCommandContext.Builder.Build()));
 
         return new CommandHandlerResult.Failed();
     }
