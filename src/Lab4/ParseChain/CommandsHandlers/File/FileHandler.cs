@@ -3,6 +3,12 @@ namespace Itmo.ObjectOrientedProgramming.Lab4.ParseChain.File;
 public class FileHandler : ICommandHandler
 {
     private ICommandHandler? _nextCommandHandler;
+    private ICommandHandler? _nextFileCommandHandler;
+
+    public FileHandler(ICommandHandler nextFileCommandHandler)
+    {
+        _nextFileCommandHandler = nextFileCommandHandler;
+    }
 
     public CommandHandlerResult HandleCommandRequest(CommandHandlerContext commandHandlerContext)
     {
@@ -14,8 +20,8 @@ public class FileHandler : ICommandHandler
         }
 
         commandHandlerContext.CommandIterator.MoveNext();
-        return _nextCommandHandler is not null
-            ? _nextCommandHandler.HandleCommandRequest(commandHandlerContext)
+        return _nextFileCommandHandler is not null
+            ? _nextFileCommandHandler.HandleCommandRequest(commandHandlerContext)
             : new CommandHandlerResult.Failed();
     }
 

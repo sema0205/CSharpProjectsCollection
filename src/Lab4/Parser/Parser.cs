@@ -27,11 +27,9 @@ public class Parser
 
         var listHandler = new ListHandler();
         listHandler.SetNextArgumentHandler(new ListDepthHandler());
+        goToHandler.SetNextCommandHandler(listHandler);
 
-        ICommandHandler treeHandler = new TreeHandler();
-        treeHandler
-            .SetNextCommandHandler(goToHandler)
-            .SetNextCommandHandler(listHandler);
+        ICommandHandler treeHandler = new TreeHandler(listHandler);
 
         // file handlers
         var showHandler = new ShowHandler();
@@ -48,14 +46,13 @@ public class Parser
 
         var renameHandler = new RenameHandler();
         renameHandler.SetNextArgumentHandler(new RenamePathHandler()).SetNextArgumentHandler(new RenameNameHandler());
-
-        ICommandHandler fileHandler = new FileHandler();
-        fileHandler
-            .SetNextCommandHandler(showHandler)
+        showHandler
             .SetNextCommandHandler(moveHandler)
             .SetNextCommandHandler(copyHandler)
             .SetNextCommandHandler(deleteHandler)
             .SetNextCommandHandler(renameHandler);
+
+        ICommandHandler fileHandler = new FileHandler(showHandler);
 
         _chain = connectHandler;
         _chain
